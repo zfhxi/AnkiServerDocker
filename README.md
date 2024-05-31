@@ -8,7 +8,7 @@ docker-compose部署：
 version: "3.8"
 services:
   ankiserver:
-    image: zfhxi/ankiserverdocker:main
+    image: zfhxi/ankiserverdocker:latest
     container_name: ankiserver
     restart: unless-stopped
     environment:
