@@ -1,5 +1,5 @@
 # AnkiServerDocker
-
+对官方pypi-anki的一个docker封装，用于部署AnkiWeb服务端，见[官方文档](https://docs.ankiweb.net/sync-server.html)。
 ## 使用
 
 docker-compose部署：
@@ -8,7 +8,7 @@ docker-compose部署：
 version: "3.8"
 services:
   ankiserver:
-    image: zfhxi/ankiserver:24.4.1
+    image: zfhxi/ankiserverdocker:main
     container_name: ankiserver
     restart: unless-stopped
     environment:
