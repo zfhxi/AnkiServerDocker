@@ -1,8 +1,10 @@
 # AnkiServerDocker
-对官方pypi-anki的一个docker封装，用于部署AnkiWeb服务端，见[官方文档](https://docs.ankiweb.net/sync-server.html)。
-## 使用
+对官方pypi-anki的一个docker封装，用于部署AnkiWeb服务端，见[官方文档](https://docs.ankiweb.net/sync-server.html)。  
+A docker package of the official pypi-anki for deploying the AnkiWeb server, see [official documentation](https://docs.ankiweb.net/sync-server.html).
 
-docker-compose部署：
+## Usage
+
+`docker-compose.yaml`：
     
 ```yaml
 version: "3.8"
@@ -14,7 +16,7 @@ services:
     environment:
       - SYNC_USER1=user:pass
       # - SYNC_USER2=user:pass
-      - SYNC_BASE=/app/data # 数据存放目录
+      - SYNC_BASE=/app/data # the storage dir
     volumes:
       - ./data:/app/data
     ports:
