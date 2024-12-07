@@ -14,9 +14,12 @@ services:
     container_name: ankiserver
     restart: unless-stopped
     environment:
-      - SYNC_USER1=user:pass
-      # - SYNC_USER2=user:pass
-      - SYNC_BASE=/app/data # the storage dir
+      - SYNC_HOST=0.0.0.0
+      - SYNC_PORT=27701
+      - SYNC_USER1=user1:pass1
+      # - SYNC_USER2=user2:pass2
+      # - SYNC_USER3=user3:pass3
+      - SYNC_BASE=/app/data # the path to the Anki data folder
     volumes:
       - ./data:/app/data
     ports:
