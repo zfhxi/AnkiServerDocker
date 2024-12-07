@@ -2,31 +2,8 @@
 # shellcheck shell=bash
 # shellcheck disable=SC2016
 
-storage_path=${SYNC_BASE:-/app/data}
-user1=${SYNC_USER1:-user:pass}
-user2=${SYNC_USER2:-}
-user3=${SYNC_USER3:-}
-# sync_port=${SYNC_PORT:-27701}
-sync_port=27701
-sync_host=${SYNC_HOST:-0.0.0.0}
-
-
-env_str="SYNC_HOST=$sync_host SYNC_PORT=$sync_port SYNC_BASE=$storage_path"
-# Add users to the environment, only if they are set. Now we support up to 3 users
-for i in {1..3}
-do
-  user_var="user$i"
-  user_val="${!user_var}"
-  if [ ! -z "$user_val" ]
-  then
-    env_str="$env_str SYNC_USER${i}=$user_val"
-  fi
-done
-
-# Print the command to be executed
-echo "Enviroments: $env_str"
-cmd_str="$env_str python -m anki.syncserver"
-echo "Running command: $cmd_str"
+echo "Enviroments:"
+printenv
 
 # Execute the command
-eval $cmd_str
+python -m anki.syncserver
