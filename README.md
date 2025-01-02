@@ -20,6 +20,7 @@ services:
       # - SYNC_USER2=user2:pass2
       # - SYNC_USER3=user3:pass3
       - SYNC_BASE=/app/data # the path to the Anki data folder
+      - TZ="Asia/Shanghai" # optional
     volumes:
       - ./data:/app/data
     ports:
