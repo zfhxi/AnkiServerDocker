@@ -1,0 +1,46 @@
+name: Update Anki and Build Docker
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # 每周日午夜 00:00 UTC
+  workflow_dispatch:  # 允许手动触发
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+jobs:
+  update-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Get latest Anki version from PyPI
+        id: get-anki-version
+        run: |
+          ANKI_VERSION=$(curl -s https://pypi.org/pypi/anki/json | jq -r .info.version)
+          echo "Latest Anki version: $ANKI_VERSION"
+          echo "anki_version=$ANKI_VERSION" >> $GITHUB_OUTPUT
+      - name: Update requirements.txt
+        run: |
+          # 使用 sed 替换 requirements.txt 中的 anki 版本
+          sed -i "s/^anki==.*/anki==${{ steps.get-anki-version.outputs.anki_version }}/" requirements.txt
+          
+          # 提交更改（可选）
+          # git config --global user.name "GitHub Actions"
+          # git config --global user.email "actions@github.com"
+          # git add requirements.txt
+          # git commit -m "Update anki to ${{ steps.get-anki-version.outputs.anki_version }}" || echo "No changes to commit"
+          # git push
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true  # 总是推送镜像
+          tags: |
+            zfhxi/ankiserverdocker:latest
+            zfhxi/ankiserverdocker:v${{ steps.get-anki-version.outputs.anki_version }}
